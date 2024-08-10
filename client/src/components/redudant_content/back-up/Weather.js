@@ -2,7 +2,8 @@
  * Weather.js
  * 
  * This component handles fetching and displaying weather information.
- * It includes a dark/light mode toggle and logout button in the top right corner.
+ * It requires user authentication and uses the OpenWeatherMap API.
+ * The component now includes improved styling and layout.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -15,7 +16,6 @@ function Weather() {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
 
   const navigate = useNavigate();
 
@@ -68,20 +68,8 @@ function Weather() {
     navigate('/');
   };
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
   return (
-    <div className={`weather-page ${darkMode ? 'dark-mode' : 'light-mode'}`}>
-      <div className="top-right-buttons">
-        <button onClick={toggleDarkMode} className="mode-toggle fancy-button">
-          {darkMode ? '☀️ Light' : '🌙 Dark'}
-        </button>
-        <button onClick={handleLogout} className="logout-button fancy-button">
-          Logout
-        </button>
-      </div>
+    <div className="weather-page">
       <div className="content-container">
         <h1>Weather Information</h1>
         <form onSubmit={handleSubmit} className="weather-form">
@@ -92,7 +80,7 @@ function Weather() {
             placeholder="Enter location"
             required
           />
-          <button type="submit" disabled={loading} className="fancy-button">
+          <button type="submit" disabled={loading}>
             {loading ? 'Loading...' : 'Get Weather'}
           </button>
         </form>
@@ -106,6 +94,7 @@ function Weather() {
             <p>Wind Speed: {weather.windSpeed} m/s</p>
           </div>
         )}
+        <button onClick={handleLogout} className="logout-button">Logout</button>
       </div>
     </div>
   );
