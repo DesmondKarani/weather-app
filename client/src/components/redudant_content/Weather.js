@@ -2,7 +2,8 @@
  * Weather.js
  * 
  * This component handles fetching and displaying weather information.
- * It includes a dark/light mode toggle.
+ * It requires user authentication and uses the OpenWeatherMap API.
+ * The component now includes improved styling and layout.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -15,7 +16,6 @@ function Weather() {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
 
   const navigate = useNavigate();
 
@@ -68,12 +68,8 @@ function Weather() {
     navigate('/');
   };
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
   return (
-    <div className={`weather-page ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+    <div className="weather-page">
       <div className="content-container">
         <h1>Weather Information</h1>
         <form onSubmit={handleSubmit} className="weather-form">
@@ -99,9 +95,6 @@ function Weather() {
           </div>
         )}
         <button onClick={handleLogout} className="logout-button">Logout</button>
-        <button onClick={toggleDarkMode} className="mode-toggle">
-          {darkMode ? 'Light Mode' : 'Dark Mode'}
-        </button>
       </div>
     </div>
   );
