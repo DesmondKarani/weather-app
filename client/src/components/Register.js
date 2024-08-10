@@ -1,3 +1,10 @@
+/**
+ * Register.js
+ * 
+ * This component handles user registration.
+ * It sends a POST request to the register endpoint and handles the response.
+ */
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

@@ -1,3 +1,10 @@
+/**
+ * Weather.js
+ * 
+ * This component handles fetching and displaying weather information.
+ * It requires user authentication and uses the OpenWeatherMap API.
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
