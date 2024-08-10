@@ -1,8 +1,8 @@
 /**
  * LandingPage.css
  * 
- * This file contains styles for the LandingPage component.
- * It sets up a full-screen background image and centers the content.
+ * This file contains styles for the LandingPage component,
+ * including dark mode, light mode, and background image styles.
  */
 
 .landing-page {
@@ -10,17 +10,56 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('https://unsplash.com/photos/a-large-body-of-water-under-a-cloudy-sky-OCRn-1DJbIc');
-  background-size: cover;
-  background-position: center;
+  /*background-image: url('%PUBLIC_URL%/weather-background.jpg');*/
+  /*background-size: cover;*/
+  /*background-position: center;*/
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.light-mode::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.dark-mode::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.top-right-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
 }
 
 .content-container {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 2rem;
-  border-radius: 10px;
+  border-radius: 15px;
   text-align: center;
   max-width: 400px;
+  width: 100%;
+  z-index: 1;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .content-container {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #f0f0f0;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
 }
 
 h1 {
@@ -28,17 +67,25 @@ h1 {
   margin-bottom: 1rem;
 }
 
+.dark-mode h1 {
+  color: #f0f0f0;
+}
+
 p {
   color: #666;
   margin-bottom: 1rem;
 }
 
+.dark-mode p {
+  color: #ccc;
+}
+
 .success-message {
-  color: green;
+  color: #4CAF50;
 }
 
 .error-message {
-  color: red;
+  color: #f44336;
 }
 
 .login-form {
@@ -51,27 +98,51 @@ p {
 input {
   padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 20px;
+  background-color: #fff;
+  color: #333;
 }
 
-.login-button, .register-button {
+.dark-mode input {
+  background-color: #444;
+  color: #f0f0f0;
+  border-color: #555;
+}
+
+.fancy-button {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.login-button {
+  transition: all 0.3s ease;
   background-color: #4CAF50;
   color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.fancy-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.fancy-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .register-button {
-  background-color: #008CBA;
-  color: white;
+  background-color: #2196F3;
 }
 
-.login-button:hover, .register-button:hover {
-  opacity: 0.9;
+.mode-toggle {
+  background-color: #f1c40f;
+  color: #333;
+}
+
+.dark-mode .mode-toggle {
+  background-color: #2196F3;
+  color: #fff;
 }

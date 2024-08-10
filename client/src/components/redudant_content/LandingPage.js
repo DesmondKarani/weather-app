@@ -2,22 +2,22 @@
  * LandingPage.js
  * 
  * This component serves as the main entry point for users.
- * It handles user login, provides a link to register, and includes a dark mode toggle.
- * The background image is now set using inline styles.
+ * It handles user login and provides a link to register.
+ * The component now includes a weather-related background and centered content.
  */
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
+
+// Import the CSS file for custom styles
 import './LandingPage.css';
-import backgroundImage from './weather-background.jpg'; // Import the image
 
 function LandingPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [darkMode, setDarkMode] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,28 +46,11 @@ function LandingPage() {
 
   const handleRegisterClick = () => navigate('/register');
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
   return (
-    <div 
-      className={`landing-page ${darkMode ? 'dark-mode' : 'light-mode'}`}
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }}
-    >
-      <div className="top-right-buttons">
-        <button onClick={toggleDarkMode} className="mode-toggle fancy-button">
-          {darkMode ? '☀️ Light' : '🌙 Dark'}
-        </button>
-      </div>
+    <div className="landing-page">
       <div className="content-container">
-        <h1>Welcome to SkyCast</h1>
-        <p><i>Your personal weather companion.</i></p>
-	  <p>Log in to explore the forecast!</p>
+        <h1>Welcome to Weather-Now</h1>
+        <p>Please log in below to access weather information.</p>
         {successMessage && <p className="success-message">{successMessage}</p>}
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleLogin} className="login-form">
@@ -85,9 +68,9 @@ function LandingPage() {
             placeholder="Password"
             required
           />
-          <button type="submit" className="fancy-button">Login</button>
+          <button type="submit" className="login-button">Login</button>
         </form>
-        <button onClick={handleRegisterClick} className="fancy-button register-button">Register</button>
+        <button onClick={handleRegisterClick} className="register-button">Register</button>
       </div>
     </div>
   );
