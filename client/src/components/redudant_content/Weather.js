@@ -1,8 +1,8 @@
 /**
  * Weather.js
  * 
- * This component handles fetching and displaying weather information.
- * It includes a dark/light mode toggle and logout button in the top right corner.
+ * This component handles fetching and displaying detailed weather information.
+ * It now includes current weather with icons, "Real Feel", and "Air Quality".
  */
 
 import React, { useState, useEffect } from 'react';
@@ -12,7 +12,8 @@ import './Weather.css';
 
 function Weather() {
   const [location, setLocation] = useState('');
-  const [weather, setWeather] = useState(null);
+  const [currentWeather, setCurrentWeather] = useState(null);
+  const [forecast, setForecast] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -50,12 +51,21 @@ function Weather() {
         throw new Error('Please log in to fetch weather data');
       }
 
-      const weatherResponse = await axios.get('/api/weather/current', {
+      // Fetch current weather
+      const currentWeatherResponse = await axios.get('/api/weather/current', {
         params: { lat, lon },
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      setWeather(weatherResponse.data);
+      setCurrentWeather(currentWeatherResponse.data);
+
+      // Fetch forecast (to be implemented)
+      // const forecastResponse = await axios.get('/api/weather/forecast', {
+      //   params: { lat, lon },
+      //   headers: { Authorization: `Bearer ${token}` }
+      // });
+      // setForecast(forecastResponse.data);
+
     } catch (error) {
       setError(error.message || 'Error fetching weather data');
     } finally {
@@ -72,6 +82,10 @@ function Weather() {
     setDarkMode(!darkMode);
   };
 
+  const getWeatherIcon = (iconCode) => {
+    return `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+  };
+
   return (
     <div className={`weather-page ${darkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="top-right-buttons">
@@ -83,7 +97,7 @@ function Weather() {
         </button>
       </div>
       <div className="content-container">
-        <h1>Search Location</h1>
+        <h1>SkyCast Weather Information</h1>
         <form onSubmit={handleSubmit} className="weather-form">
           <input
             type="text"
@@ -93,19 +107,28 @@ function Weather() {
             required
           />
           <button type="submit" disabled={loading} className="fancy-button">
-            {loading ? 'Loading...' : 'Get Weather'}
+            {loading ? 'Loading...' : 'Get Forecast'}
           </button>
         </form>
         {error && <p className="error-message">{error}</p>}
-        {weather && (
+        {currentWeather && (
           <div className="weather-info">
-            <h2>{location}</h2>
-            <p>Temperature: {weather.temperature}°C</p>
-            <p>Description: {weather.description}</p>
-            <p>Humidity: {weather.humidity}%</p>
-            <p>Wind Speed: {weather.windSpeed} m/s</p>
+            <h2>Current Weather in {location}</h2>
+            <p className="current-time">As of {new Date().toLocaleTimeString()}</p>
+            <div className="weather-details">
+              <img src={getWeatherIcon(currentWeather.icon)} alt={currentWeather.description} className="weather-icon" />
+              <p className="temperature">{Math.round(currentWeather.temperature)}°C</p>
+              <p className="description">{currentWeather.description}</p>
+            </div>
+            <div className="additional-info">
+              <p>Real Feel: {Math.round(currentWeather.feelsLike)}°C</p>
+              <p>Humidity: {currentWeather.humidity}%</p>
+              <p>Wind Speed: {currentWeather.windSpeed} m/s</p>
+              <p>Air Quality: {currentWeather.airQuality || 'N/A'}</p>
+            </div>
           </div>
         )}
+        {/* Forecast section to be added later */}
       </div>
     </div>
   );

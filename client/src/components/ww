@@ -4,6 +4,7 @@
  * This component handles fetching and displaying detailed weather information.
  * It now includes current weather with icons, "Real Feel", and "Air Quality".
  */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -57,15 +58,15 @@ function Weather() {
       });
 
       setCurrentWeather(currentWeatherResponse.data);
-
-      // Fetch forecast
-      const forecastResponse = await axios.get('/api/weather/forecast', {
-        params: { lat, lon },
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setForecast(forecastResponse.data);
-
       setLastUpdated(new Date());
+
+      // Fetch forecast (to be implemented)
+      // const forecastResponse = await axios.get('/api/weather/forecast', {
+      //   params: { lat, lon },
+      //   headers: { Authorization: `Bearer ${token}` }
+      // });
+      // setForecast(forecastResponse.data);
+
     } catch (error) {
       setError(error.message || 'Error fetching weather data');
     } finally {
@@ -108,7 +109,7 @@ function Weather() {
         </button>
       </div>
       <div className="content-container">
-        <h2>Search Location</h2>
+        <h1>SkyCast Weather Information</h1>
         <form onSubmit={handleSubmit} className="weather-form">
           <input
             type="text"
@@ -118,7 +119,7 @@ function Weather() {
             required
           />
           <button type="submit" disabled={loading} className="fancy-button">
-            {loading ? 'Loading...' : 'Get Weather'}
+            {loading ? 'Loading...' : 'Get Forecast'}
           </button>
         </form>
         {error && <p className="error-message">{error}</p>}
@@ -128,9 +129,9 @@ function Weather() {
             <div className="update-info">
               <p className="current-time">
                 As of {lastUpdated ? lastUpdated.toLocaleTimeString() : 'N/A'}
-                <button
-                  onClick={handleRefresh}
-                  className="refresh-button"
+                <button 
+                  onClick={handleRefresh} 
+                  className="refresh-button" 
                   disabled={loading}
                   aria-label="Refresh weather data"
                 >
@@ -140,42 +141,18 @@ function Weather() {
             </div>
             <div className="weather-details">
               <img src={getWeatherIcon(currentWeather.icon)} alt={currentWeather.description} className="weather-icon" />
-              <div className="temperature-description">
-                <p className="temperature">{Math.round(currentWeather.temperature)}°C</p>
-                <p className="description">{currentWeather.description}</p>
-              </div>
+              <p className="temperature">{Math.round(currentWeather.temperature)}°C</p>
+              <p className="description">{currentWeather.description}</p>
             </div>
             <div className="additional-info">
-              <div className="info-item">
-                <span className="info-label">Real Feel:</span>
-                <span className="info-value">{Math.round(currentWeather.feelsLike)}°C</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Humidity:</span>
-                <span className="info-value">{currentWeather.humidity}%</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Wind Speed:</span>
-                <span className="info-value">{currentWeather.windSpeed} m/s</span>
-              </div>
+              <p>Real Feel: {Math.round(currentWeather.feelsLike)}°C</p>
+              <p>Humidity: {currentWeather.humidity}%</p>
+              <p>Wind Speed: {currentWeather.windSpeed} m/s</p>
+              <p>Air Quality: {currentWeather.airQuality || 'N/A'}</p>
             </div>
           </div>
         )}
-        {forecast && (
-          <div className="forecast-info">
-            <h3>5-Day Forecast</h3>
-            <div className="forecast-list">
-              {forecast.slice(0, 40, 8).map((item, index) => (
-                <div key={index} className="forecast-item">
-                  <p className="forecast-date">{new Date(item.dt * 1000).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</p>
-                  <img src={getWeatherIcon(item.icon)} alt={item.description} className="forecast-icon" />
-                  <p className="forecast-temp">{Math.round(item.temp)}°C</p>
-                  <p className="forecast-description">{item.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Forecast section to be added later */}
       </div>
     </div>
   );

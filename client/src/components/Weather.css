@@ -1,6 +1,6 @@
 /**
  * Weather.css
- * 
+ *
  * This file contains styles for the Weather component,
  * including dark mode, light mode, and fancy button styles.
  */
@@ -38,7 +38,7 @@
   padding: 2rem;
   border-radius: 15px;
   text-align: center;
-  max-width: 500px;
+  max-width: 800px;
   width: 100%;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -51,6 +51,7 @@
 
 h1 {
   margin-bottom: 1rem;
+  font-size: 2rem;
 }
 
 .weather-form {
@@ -127,14 +128,43 @@ button:disabled {
   font-size: 1.5rem;
 }
 
+.update-info {
+  margin-bottom: 1rem;
+}
+
 .current-time {
   font-size: 0.9rem;
   color: #666;
-  margin-bottom: 1rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .dark-mode .current-time {
   color: #aaa;
+}
+
+.refresh-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.refresh-button:hover {
+  transform: rotate(90deg);
+}
+
+.refresh-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .weather-details {
@@ -149,26 +179,42 @@ button:disabled {
   height: 100px;
 }
 
+.temperature-description {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 1rem;
+}
+
 .temperature {
   font-size: 3rem;
   font-weight: bold;
-  margin: 0 1rem;
+  margin: 0;
 }
 
 .description {
   font-size: 1.2rem;
   text-transform: capitalize;
+  margin: 0;
 }
 
 .additional-info {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
   font-size: 0.9rem;
+  margin-top: 1rem;
 }
 
-.additional-info p {
-  margin: 0;
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-label {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
 }
 
 .logout-button {
@@ -182,4 +228,56 @@ button:disabled {
 .dark-mode .mode-toggle {
   background-color: #f1c40f;
   color: #333;
+}
+
+.forecast-info {
+  margin-top: 2rem;
+}
+
+.forecast-info h3 {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.forecast-list {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+.forecast-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.dark-mode .forecast-item {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.forecast-date {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.forecast-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.forecast-temp {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.forecast-description {
+  font-size: 0.8rem;
+  text-transform: capitalize;
 }
