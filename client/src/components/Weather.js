@@ -68,6 +68,10 @@ function Weather() {
       setLastUpdated(new Date());
     } catch (error) {
       setError(error.message || 'Error fetching weather data');
+      // Clear weather data when there's an error
+      setCurrentWeather(null);
+      setForecast(null);
+      setLastUpdated(null);
     } finally {
       setLoading(false);
     }
