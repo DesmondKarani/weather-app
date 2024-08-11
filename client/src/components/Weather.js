@@ -176,6 +176,9 @@ function Weather() {
             </div>
           </div>
         )}
+        <footer className="copyright">
+          <p>&copy; {new Date().getFullYear()} Designed by Desmond Karani. All rights reserved.</p>
+        </footer>
       </div>
     </div>
   );
