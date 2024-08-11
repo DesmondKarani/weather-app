@@ -107,8 +107,17 @@ button:disabled {
 }
 
 .error-message {
-  color: #f44336;
+  /*color: #f44336;*/
   margin-bottom: 1rem;
+}
+
+.red-text {
+  color: #ff0000; /* Bright red */
+}
+
+/* For better visibility in dark mode */
+.dark-mode .red-text {
+  color: #ff6666; /* Lighter red for dark mode */
 }
 
 .weather-info {

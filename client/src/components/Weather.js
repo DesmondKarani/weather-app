@@ -40,7 +40,7 @@ function Weather() {
       });
 
       if (geoResponse.data.length === 0) {
-        throw new Error('Location not found');
+        throw new Error('Location not found! Please Type Correctly...');
       }
 
       const { lat, lon } = geoResponse.data[0];
@@ -121,7 +121,7 @@ function Weather() {
             {loading ? 'Loading...' : 'Get Weather'}
           </button>
         </form>
-        {error && <p className="error-message">{error}</p>}
+        {error && <p className="error-message red-text">{error}</p>}
         {currentWeather && (
           <div className="weather-info">
             <h2>Current Weather in {location}</h2>
