@@ -111,22 +111,64 @@ button:disabled {
 }
 
 .weather-info {
-  background-color: #f9f9f9;
-  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
   border-radius: 15px;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .dark-mode .weather-info {
-  background-color: #3a3a3a;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .weather-info h2 {
   margin-bottom: 0.5rem;
+  font-size: 1.5rem;
 }
 
-.weather-info p {
-  margin-bottom: 0.5rem;
+.current-time {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.dark-mode .current-time {
+  color: #aaa;
+}
+
+.weather-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.weather-icon {
+  width: 100px;
+  height: 100px;
+}
+
+.temperature {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0 1rem;
+}
+
+.description {
+  font-size: 1.2rem;
+  text-transform: capitalize;
+}
+
+.additional-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.additional-info p {
+  margin: 0;
 }
 
 .logout-button {

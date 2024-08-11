@@ -2,7 +2,7 @@
  * Weather.js
  * 
  * This component handles fetching and displaying weather information.
- * It includes a dark/light mode toggle.
+ * It includes a dark/light mode toggle and logout button in the top right corner.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -74,8 +74,16 @@ function Weather() {
 
   return (
     <div className={`weather-page ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+      <div className="top-right-buttons">
+        <button onClick={toggleDarkMode} className="mode-toggle fancy-button">
+          {darkMode ? '☀️ Light' : '🌙 Dark'}
+        </button>
+        <button onClick={handleLogout} className="logout-button fancy-button">
+          Logout
+        </button>
+      </div>
       <div className="content-container">
-        <h1>Weather Information</h1>
+        <h1>Search Location</h1>
         <form onSubmit={handleSubmit} className="weather-form">
           <input
             type="text"
@@ -84,7 +92,7 @@ function Weather() {
             placeholder="Enter location"
             required
           />
-          <button type="submit" disabled={loading}>
+          <button type="submit" disabled={loading} className="fancy-button">
             {loading ? 'Loading...' : 'Get Weather'}
           </button>
         </form>
@@ -98,10 +106,6 @@ function Weather() {
             <p>Wind Speed: {weather.windSpeed} m/s</p>
           </div>
         )}
-        <button onClick={handleLogout} className="logout-button">Logout</button>
-        <button onClick={toggleDarkMode} className="mode-toggle">
-          {darkMode ? 'Light Mode' : 'Dark Mode'}
-        </button>
       </div>
     </div>
   );
