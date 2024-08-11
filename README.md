@@ -11,6 +11,8 @@ This is a full-stack weather application built using the MERN stack (MongoDB, Ex
 - [Environment Variables](#environment-variables)
 - [Running the Application](#running-the-application)
 - [Technologies Used](#technologies-used)
+- [Authentication](#authentication)
+- [Contributing](#contributing)
 - [Contact](#contact)
 - [Licence](#license)
 
@@ -102,14 +104,26 @@ REACT_APP_WEATHER_API_KEY=your_weather_api_key
 - **Authentication:** JWT
 - **API Integration:** Weather API
 
+## Authentication
+
+This application uses JWT for authentication. Include the token in the Authorization header for protected routes:
+
+```
+Authorization: Bearer YOUR_JWT_TOKEN
+```
+
+## Contributing
+
+This project is currently maintained by Desmond Karani. Contributions, issues, and feature requests are welcome!
+
 ## Contact
 
 Connect with me on social media:
 
 - **X (formerly Twitter):** [@karanides](https://x.com/karani_des)
-- **LinkedIn:** [Your LinkedIn Name](https://www.linkedin.com/in/desmond-karani-a78359b2/)
-- **GitHub:** [Your GitHub Username](https://github.com/DesmondKarani)
-- **Instagram:** [Your Instagram Handle](https://www.instagram.com/karani_desmond/)
+- **LinkedIn:** [Desmond Karani](https://www.linkedin.com/in/desmond-karani-a78359b2/)
+- **GitHub:** [Desmond Karani](https://github.com/DesmondKarani)
+- **Instagram:** [@karani_desmond](https://www.instagram.com/karani_desmond/)
 
 ## License
 
