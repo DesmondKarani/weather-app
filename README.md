@@ -12,6 +12,7 @@ This is a full-stack weather application built using the MERN stack (MongoDB, Ex
 - [Running the Application](#running-the-application)
 - [Technologies Used](#technologies-used)
 - [Contact](#contact)
+- [Licence](#license)
 
 ## Project Structure
 
@@ -103,4 +104,15 @@ REACT_APP_WEATHER_API_KEY=your_weather_api_key
 
 ## Contact
 
-Developed by Desmond Karani. Feel free to reach out to me on X (formerly Twitter) at [@karanides](https://twitter.com/karanides).
+Connect with me on social media:
+
+- **X (formerly Twitter):** [@karanides](https://x.com/karani_des)
+- **LinkedIn:** [Your LinkedIn Name](https://www.linkedin.com/in/desmond-karani-a78359b2/)
+- **GitHub:** [Your GitHub Username](https://github.com/DesmondKarani)
+- **Instagram:** [Your Instagram Handle](https://www.instagram.com/karani_desmond/)
+
+## License
+
+This project is proprietary software and cannot be used, modified, or distributed without explicit permission from the author, Desmond Karani. All rights reserved.
+
+See [License](./LICENSE).
