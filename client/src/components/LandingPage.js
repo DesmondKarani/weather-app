@@ -65,9 +65,9 @@ function LandingPage() {
         </button>
       </div>
       <div className="content-container">
-        <h1>Welcome to SkyCast</h1>
+        <h1>Welcome to Wingu</h1>
         <p><i>Your personal weather companion.</i></p>
-	  <p>Log in to explore the forecast!</p>
+	  <p>Please login below</p>
         {successMessage && <p className="success-message">{successMessage}</p>}
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleLogin} className="login-form">

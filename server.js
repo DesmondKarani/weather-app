@@ -5,34 +5,38 @@
  * It handles middleware setup, database connection, routing, and server initialization.
  */
 
-const express = require('express'); // Import the Express framework
-const authRoutes = require('./routes/auth'); // Import authentication routes
-const weatherRoutes = require('./routes/weather'); // Import weather-related routes
-const errorHandler = require('./middleware/errorHandler'); // Import custom error handling middleware
-const mongoose = require('mongoose'); // Import Mongoose for MongoDB interaction
-require('dotenv').config(); // Load environment variables from a .env file
+const express = require('express');
+const authRoutes = require('./routes/auth');
+const weatherRoutes = require('./routes/weather');
+const errorHandler = require('./middleware/errorHandler');
+const mongoose = require('mongoose');
+const cors = require('cors'); // Import CORS
+require('dotenv').config();
 
 // Initialize Express app
-const app = express(); 
-const PORT = process.env.PORT || 5000; // Use port from environment or default to 5000
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// CORS configuration
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  optionsSuccessStatus: 200
+};
 
 // Middleware setup
-app.use(express.json()); // Parse incoming JSON request bodies
-app.use('/api/auth', authRoutes); // Handle requests to /api/auth using auth routes
-app.use('/api/weather', weatherRoutes); // Handle requests to /api/weather using weather routes
-app.use(errorHandler); // Handle errors globally with custom middleware
+app.use(cors(corsOptions)); // Use CORS with options
+app.use(express.json());
+app.use('/api/auth', authRoutes);
+app.use('/api/weather', weatherRoutes);
+app.use(errorHandler);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true, // Use new URL string parser (MongoDB)
-  useUnifiedTopology: true, // Use the new server discovery and monitoring engine
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 })
-.then(() => console.log('MongoDB connected')) // Log success if connected
-.catch(err => console.error('MongoDB connection error:', err)); // Log error if connection fails
-
-// Note: These routes are for future implementation
-// app.use('/api/weather', require('./routes/weather')); // Weather route handler placeholder
-// app.use('/api/users', require('./routes/users')); // User route handler placeholder
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,11 +1,11 @@
 {
-  "short_name": "SkyCast",
-  "name": "SkyCast Weather App",
+  "short_name": "Wingu",
+  "name": "Wingu - Your Personal Weather Companion",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "thunder.svg",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/svg+xml"
     },
     {
       "src": "logo192.png",

@@ -49,9 +49,20 @@
   box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
 }
 
-h1 {
+h1, h2, h3 {
   margin-bottom: 1rem;
+}
+
+h1 {
   font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.3rem;
 }
 
 .weather-form {
@@ -119,6 +130,21 @@ button:disabled {
   color: #ff6666; /* Lighter red for dark mode */
 }
 
+.warning {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ffeeba;
+}
+
+.dark-mode .warning {
+  background-color: #533f03;
+  color: #fff3cd;
+  border-color: #533f03;
+}
+
 .weather-info {
   background-color: rgba(255, 255, 255, 0.1);
   padding: 1.5rem;
@@ -129,11 +155,6 @@ button:disabled {
 
 .dark-mode .weather-info {
   background-color: rgba(0, 0, 0, 0.2);
-}
-
-.weather-info h2, .forecast-info h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
 }
 
 .update-info {
@@ -242,11 +263,6 @@ button:disabled {
   margin-top: 2rem;
 }
 
-.forecast-info h3 {
-  margin-bottom: 1rem;
-  font-size: 1.3rem;
-}
-
 .forecast-list {
   display: flex;
   justify-content: space-between;
@@ -317,4 +333,83 @@ button:disabled {
 .dark-mode .copyright {
   border-top-color: rgba(255, 255, 255, 0.1);
   color: #aaa;
+}
+
+@media (max-width: 600px) {
+  .content-container {
+    padding: 1rem;
+  }
+
+  .weather-form {
+    flex-direction: column;
+  }
+
+  .fancy-button {
+    width: 100%;
+  }
+
+  .additional-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .forecast-list {
+    justify-content: flex-start;
+  }
+}
+/* New styles for air quality section */
+.air-quality-info {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin-top: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .air-quality-info {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.aqi-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.aqi-components {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.aqi-components p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .weather-page {
+    padding-top: 70px; /* Add space for the buttons at the top */
+  }
+
+  .top-right-buttons {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+  }
+
+  .top-right-buttons .fancy-button {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .content-container {
+    padding: 1rem;
+  }
+
+  .aqi-components {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
