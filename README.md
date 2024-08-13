@@ -1,11 +1,11 @@
 # Weather App
 
-This is a full-stack weather application built using the MERN stack (MongoDB, Express, React, Node.js). It allows users to register, login, and fetch current weather data based on location.
+This is a full-stack weather application built using the MERN stack (MongoDB, Express, React, Node.js). It allows users to register, login, and fetch current weather data, air quality information, and a 5-day forecast based on location.
 
 ## Table of Contents
 
-- [Project Structure](#project-structure)
 - [Features](#features)
+- [Project Structure](#project-structure)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Environment Variables](#environment-variables)
@@ -14,35 +14,67 @@ This is a full-stack weather application built using the MERN stack (MongoDB, Ex
 - [Authentication](#authentication)
 - [Contributing](#contributing)
 - [Contact](#contact)
-- [Licence](#license)
+- [License](#license)
+
+## Features
+
+- **User Authentication:** Secure sign-up and login functionality using JWT.
+- **Weather Data:** Fetch and display current weather information, including temperature, humidity, and wind speed.
+- **Air Quality:** Show air quality index (AQI) and pollutant levels.
+- **5-Day Forecast:** Display a 5-day weather forecast.
+- **Responsive UI:** Frontend built with React to provide a smooth user experience across devices.
+- **Dark Mode:** Toggle between light and dark themes for comfortable viewing.
 
 ## Project Structure
 
 ```
 weather-app/
 ├── client
-│   ├── build
 │   ├── public
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
 │   └── src
 │       ├── components
+│       │   ├── LandingPage.js
+│       │   ├── LandingPage.css
+│       │   ├── Register.js
+│       │   ├── Register.css
+│       │   ├── Weather.js
+│       │   ├── Weather.css
+│       │   └── weather-background.jpg
 │       ├── App.js
-│       └── index.js
+│       ├── App.css
+│       ├── index.js
+│       ├── index.css
+│       ├── logo.svg
+│       ├── reportWebVitals.js
+│       └── setupTests.js
 ├── middleware
+│   ├── auth.js
+│   └── errorHandler.js
 ├── models
+│   └── User.js
 ├── routes
+│   ├── auth.js
+│   └── weather.js
+├── .env
+├── .gitignore
+├── LICENSE
+├── README.md
+├── package.json
+├── package-lock.json
 └── server.js
-```
-## Features
 
-- **User Authentication:** Secure sign-up and login functionality using JWT.
-- **Weather Data:** Fetch and display weather information from an external API.
-- **Responsive UI:** Frontend built with React to provide a smooth user experience across devices.
+```
 
 ## Prerequisites
 
 Ensure you have the following installed:
-
-- Node.js
+- Node.js (v14 or later)
 - npm (Node Package Manager)
 - MongoDB
 
@@ -51,11 +83,11 @@ Ensure you have the following installed:
 1. Clone the repository:
     ```
     git clone https://github.com/yourusername/weather-app.git
+    cd weather-app
     ```
 
 2. Install server dependencies:
     ```
-    cd weather-app
     npm install
     ```
 
@@ -67,50 +99,48 @@ Ensure you have the following installed:
 
 ## Environment Variables
 
-Create a `.env` file in both the root directory and the `client` directory. Below are the required environment variables:
+Create a `.env` file in the root directory and a `.env.production` file in the `client` directory. Below are the required environment variables:
 
 ### Root `.env` (Backend)
 ```
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
+MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-WEATHER_API_KEY=your_weather_api_key
+OPENWEATHERMAP_API_KEY=your_openweathermap_api_key
 ```
 
-### Client `.env` (Frontend)
+### Client `.env.production` (Frontend)
 ```
-REACT_APP_WEATHER_API_KEY=your_weather_api_key
+REACT_APP_API_URL=https://your-production-api-url.com
+REACT_APP_OPENWEATHERMAP_API_KEY=your_openweathermap_api_key
 ```
 
 ## Running the Application
 
-1. **Backend:**
+1. Start the backend server:
    ```
-   node server
-   ```
-
-2. **Frontend:**
-   Open a new terminal window and run:
-   ```
-   cd client
-   npm run build
    npm start
    ```
+
+2. In a new terminal, start the frontend development server:
+   ```
+   cd client
+   npm start
+   ```
+
+3. Access the application at `http://localhost:3000`
 
 ## Technologies Used
 
 - **Backend:** Node.js, Express, MongoDB
-- **Frontend:** React
-- **Authentication:** JWT
-- **API Integration:** Weather API
+- **Frontend:** React, Axios
+- **Authentication:** JSON Web Tokens (JWT)
+- **API Integration:** OpenWeatherMap API
+- **Styling:** CSS
 
 ## Authentication
 
-This application uses JWT for authentication. Include the token in the Authorization header for protected routes:
-
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
+This application uses JWT for authentication. The token is automatically included in the Authorization header for protected routes when using the frontend.
 
 ## Contributing
 
