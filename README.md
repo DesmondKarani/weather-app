@@ -29,46 +29,53 @@ This is a full-stack weather application built using the MERN stack (MongoDB, Ex
 
 ```
 weather-app/
-├── client
-│   ├── public
-│   │   ├── favicon.ico
-│   │   ├── index.html
-│   │   ├── logo192.png
-│   │   ├── logo512.png
-│   │   ├── manifest.json
-│   │   └── robots.txt
-│   └── src
-│       ├── components
-│       │   ├── LandingPage.js
-│       │   ├── LandingPage.css
-│       │   ├── Register.js
-│       │   ├── Register.css
-│       │   ├── Weather.js
-│       │   ├── Weather.css
-│       │   └── weather-background.jpg
-│       ├── App.js
-│       ├── App.css
-│       ├── index.js
-│       ├── index.css
-│       ├── logo.svg
-│       ├── reportWebVitals.js
-│       └── setupTests.js
-├── middleware
-│   ├── auth.js
-│   └── errorHandler.js
-├── models
-│   └── User.js
-├── routes
-│   ├── auth.js
-│   └── weather.js
 ├── .env
 ├── .gitignore
 ├── LICENSE
 ├── README.md
-├── package.json
+├── client/
+│   ├── .env
+│   ├── .env.production
+│   ├── .gitignore
+│   ├── README.md
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   ├── robots.txt
+│   │   └── thunder.svg
+│   └── src/
+│       ├── App.css
+│       ├── App.js
+│       ├── App.test.js
+│       ├── components/
+│       │   ├── LandingPage.css
+│       │   ├── LandingPage.js
+│       │   ├── Register.css
+│       │   ├── Register.js
+│       │   ├── Weather.css
+│       │   ├── Weather.js
+│       │   └── weather-background.jpg
+│       ├── index.css
+│       ├── index.js
+│       ├── logo.svg
+│       ├── reportWebVitals.js
+│       └── setupTests.js
+├── middleware/
+│   ├── auth.js
+│   └── errorHandler.js
+├── models/
+│   └── User.js
 ├── package-lock.json
+├── package.json
+├── routes/
+│   ├── auth.js
+│   └── weather.js
 └── server.js
-
 ```
 
 ## Prerequisites
