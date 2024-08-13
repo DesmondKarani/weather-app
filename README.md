@@ -47,7 +47,7 @@ weather-app/
 │   │   └── thunder.svg    # SVG image used in the application
 │   └── src/               # Source files for the client
 │       ├── App.js         # Main React component
-│       ├── components/    # Reusable components
+│       ├── components/
 │       │   ├── LandingPage.css      # Styles for the landing page
 │       │   ├── LandingPage.js       # Landing page component
 │       │   ├── Register.css         # Styles for the registration page
