@@ -29,53 +29,48 @@ This is a full-stack weather application built using the MERN stack (MongoDB, Ex
 
 ```
 weather-app/
-├── .env
-├── .gitignore
-├── LICENSE
-├── README.md
-├── client/
-│   ├── .env
-│   ├── .env.production
-│   ├── .gitignore
-│   ├── README.md
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── public/
-│   │   ├── favicon.ico
-│   │   ├── index.html
-│   │   ├── logo192.png
-│   │   ├── logo512.png
-│   │   ├── manifest.json
-│   │   ├── robots.txt
-│   │   └── thunder.svg
-│   └── src/
-│       ├── App.css
-│       ├── App.js
-│       ├── App.test.js
-│       ├── components/
-│       │   ├── LandingPage.css
-│       │   ├── LandingPage.js
-│       │   ├── Register.css
-│       │   ├── Register.js
-│       │   ├── Weather.css
-│       │   ├── Weather.js
-│       │   └── weather-background.jpg
-│       ├── index.css
-│       ├── index.js
-│       ├── logo.svg
-│       ├── reportWebVitals.js
-│       └── setupTests.js
-├── middleware/
-│   ├── auth.js
-│   └── errorHandler.js
-├── models/
-│   └── User.js
-├── package-lock.json
-├── package.json
-├── routes/
-│   ├── auth.js
-│   └── weather.js
-└── server.js
+├── .env                   # Environment variables for the server
+├── .gitignore             # Files and directories to ignore in git
+├── LICENSE                # Project license
+├── README.md              # Project documentation (this file)
+├── client/                # Frontend of the application
+│   ├── .env               # Environment variables for the client
+│   ├── .env.production    # Environment variables for production
+│   ├── .gitignore         # Files and directories to ignore in the client
+│   ├── README.md          # Client-side documentation
+│   ├── package-lock.json  # Dependency tree lock file for client
+│   ├── package.json       # Client-side dependencies and scripts
+│   ├── public/            # Public assets for the client
+│   │   ├── index.html     # HTML template for the client
+│   │   ├── manifest.json  # Web app manifest file
+│   │   ├── robots.txt     # Robots exclusion file
+│   │   └── thunder.svg    # SVG image used in the application
+│   └── src/               # Source files for the client
+│       ├── App.js         # Main React component
+│       ├── components/    # Reusable components
+│       │   ├── LandingPage.css      # Styles for the landing page
+│       │   ├── LandingPage.js       # Landing page component
+│       │   ├── Register.css         # Styles for the registration page
+│       │   ├── Register.js          # Registration component
+│       │   ├── Weather.css          # Styles for the weather component
+│       │   ├── Weather.js           # Weather display component
+│       │   └── weather-background.jpg  # Background image for weather display
+│       ├── index.css      # Global styles
+│       ├── index.js       # Entry point for the React app
+│       └── reportWebVitals.js  # Performance reporting for the app
+├── middleware/            # Server middleware
+│   ├── auth.js            # Authentication middleware
+│   └── errorHandler.js    # Error handling middleware
+├── models/                # Data models for the application
+│   └── User.js            # User model for authentication and authorization
+├── package-lock.json      # Dependency tree lock file for the server
+├── package.json           # Server-side dependencies and scripts
+├── routes/                # API routes
+│   ├── auth.js            # Authentication routes
+│   └── weather.js         # Weather data routes
+└── server.js              # Entry point for the server
+
+7 directories, 33 files
 ```
 
 ## Prerequisites
