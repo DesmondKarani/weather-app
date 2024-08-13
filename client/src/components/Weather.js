@@ -11,8 +11,7 @@ import './Weather.css';
 
 function Weather() {
   const [location, setLocation] = useState('');
-  const [currentWeather, setCurrentWeather] = useState(null);
-  const [forecast, setForecast] = useState(null);
+  const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -31,47 +30,21 @@ function Weather() {
     setError('');
     setLoading(true);
     try {
-      const geoResponse = await axios.get(`http://api.openweathermap.org/geo/1.0/direct`, {
-        params: {
-          q: location,
-          limit: 1,
-          appid: process.env.REACT_APP_OPENWEATHERMAP_API_KEY
-        }
-      });
-
-      if (geoResponse.data.length === 0) {
-        throw new Error('Location not found! Please Type Correctly...');
-      }
-
-      const { lat, lon } = geoResponse.data[0];
       const token = localStorage.getItem('token');
-
       if (!token) {
         throw new Error('Please log in to fetch weather data');
       }
 
-      // Fetch current weather
-      const currentWeatherResponse = await axios.get('/api/weather/current', {
-        params: { lat, lon },
+      const response = await axios.get('/api/weather/weatherdata', {
+        params: { location },
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      setCurrentWeather(currentWeatherResponse.data);
-
-      // Fetch forecast
-      const forecastResponse = await axios.get('/api/weather/forecast', {
-        params: { lat, lon },
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setForecast(forecastResponse.data);
-
+      setWeatherData(response.data);
       setLastUpdated(new Date());
     } catch (error) {
-      setError(error.message || 'Error fetching weather data');
-      // Clear weather data when there's an error
-      setCurrentWeather(null);
-      setForecast(null);
-      setLastUpdated(null);
+      setError(error.response?.data?.message || error.message || 'Error fetching weather data');
+      setWeatherData(null);
     } finally {
       setLoading(false);
     }
@@ -101,6 +74,14 @@ function Weather() {
     return `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
   };
 
+  const formatDateTime = (timestamp) => {
+    const date = new Date(timestamp * 1000);
+    return {
+      date: date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }),
+      time: date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+    };
+  };
+
   return (
     <div className={`weather-page ${darkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="top-right-buttons">
@@ -126,9 +107,9 @@ function Weather() {
           </button>
         </form>
         {error && <p className="error-message red-text">{error}</p>}
-        {currentWeather && (
+        {weatherData && (
           <div className="weather-info">
-            <h2>Current Weather in {location}</h2>
+            <h2>Current Weather in {weatherData.location.name}, {weatherData.location.country}</h2>
             <div className="update-info">
               <p className="current-time">
                 As of {lastUpdated ? lastUpdated.toLocaleTimeString() : 'N/A'}
@@ -143,40 +124,44 @@ function Weather() {
               </p>
             </div>
             <div className="weather-details">
-              <img src={getWeatherIcon(currentWeather.icon)} alt={currentWeather.description} className="weather-icon" />
+              <img src={getWeatherIcon(weatherData.current.icon)} alt={weatherData.current.description} className="weather-icon" />
               <div className="temperature-description">
-                <p className="temperature">{Math.round(currentWeather.temperature)}°C</p>
-                <p className="description">{currentWeather.description}</p>
+                <p className="temperature">{Math.round(weatherData.current.temperature)}°C</p>
+                <p className="description">{weatherData.current.description}</p>
               </div>
             </div>
             <div className="additional-info">
               <div className="info-item">
                 <span className="info-label">Real Feel:</span>
-                <span className="info-value">{Math.round(currentWeather.feelsLike)}°C</span>
+                <span className="info-value">{Math.round(weatherData.current.feelsLike)}°C</span>
               </div>
               <div className="info-item">
                 <span className="info-label">Humidity:</span>
-                <span className="info-value">{currentWeather.humidity}%</span>
+                <span className="info-value">{weatherData.current.humidity}%</span>
               </div>
               <div className="info-item">
                 <span className="info-label">Wind Speed:</span>
-                <span className="info-value">{currentWeather.windSpeed} m/s</span>
+                <span className="info-value">{weatherData.current.windSpeed} m/s</span>
               </div>
             </div>
           </div>
         )}
-        {forecast && (
+        {weatherData && weatherData.forecast && (
           <div className="forecast-info">
-            <h3>5-Day Forecast</h3>
+            <h3>5-Day Forecast for {weatherData.location.name}, {weatherData.location.country}</h3>
             <div className="forecast-list">
-              {forecast.slice(0, 40, 8).map((item, index) => (
-                <div key={index} className="forecast-item">
-                  <p className="forecast-date">{new Date(item.dt * 1000).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</p>
-                  <img src={getWeatherIcon(item.icon)} alt={item.description} className="forecast-icon" />
-                  <p className="forecast-temp">{Math.round(item.temp)}°C</p>
-                  <p className="forecast-description">{item.description}</p>
-                </div>
-              ))}
+              {weatherData.forecast.slice(0, 40, 8).map((item, index) => {
+                const { date, time } = formatDateTime(item.dt);
+                return (
+                  <div key={index} className="forecast-item">
+                    <p className="forecast-date">{date}</p>
+                    <p className="forecast-time">{time}</p>
+                    <img src={getWeatherIcon(item.icon)} alt={item.description} className="forecast-icon" />
+                    <p className="forecast-temp">{Math.round(item.temp)}°C</p>
+                    <p className="forecast-description">{item.description}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
