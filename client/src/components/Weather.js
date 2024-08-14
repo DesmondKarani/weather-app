@@ -174,7 +174,7 @@ function Weather() {
         {username && <h2 className="welcome-message">{getWelcomeMessage()}</h2>}
         {isProduction && !API_URL && (
           <p className="warning">
-            Note: This is a production build. If you haven't hosted the API, weather data won't be available.
+            Note: This is a production build. If API is not hosted, weather data will not be available.
           </p>
         )}
         <form onSubmit={handleSubmit} className="weather-form">
@@ -283,7 +283,7 @@ function Weather() {
           </div>
         )}
         <footer className="copyright">
-          <p>&copy; {new Date().getFullYear()} Designed by Desmond Karani. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Wingu, Inc. All rights reserved.</p>
         </footer>
       </div>
     </div>
