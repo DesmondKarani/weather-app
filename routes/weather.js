@@ -1,20 +1,23 @@
 /**
  * weather.js
  *
- * This file contains the route handler for weather-related API requests.
+ * This file contains the route handlers for weather-related API requests.
  * It uses the OpenWeatherMap API to fetch weather data based on location.
  *
  * The main functionality includes:
  * 1. Geocoding: Convert location name to coordinates
  * 2. Fetching current weather data
  * 3. Fetching 5-day forecast data
- * 4. Fetching air quality data (New addition)
+ * 4. Fetching air quality data
+ * 5. Saving recent searches for users
+ * 6. Providing search suggestions based on user's recent searches
  *
- * This route is protected by authentication middleware.
+ * These routes are protected by authentication middleware.
  */
 const express = require('express');
 const axios = require('axios');
 const auth = require('../middleware/auth');
+const User = require('../models/User');
 const router = express.Router();
 
 // Route to get weather data
@@ -29,6 +32,13 @@ router.get('/weatherdata', auth, async (req, res) => {
   }
 
   try {
+    // Save the search to user's recent searches
+    const user = await User.findById(req.user.id);
+    if (user) {
+      user.recentSearches = [location, ...user.recentSearches.filter(search => search !== location)].slice(0, 5);
+      await user.save();
+    }
+
     // Step 1: Geocoding - Convert location name to coordinates
     console.log('Fetching geocoding data...');
     const geoResponse = await axios.get('https://api.openweathermap.org/geo/1.0/direct', {
@@ -70,7 +80,7 @@ router.get('/weatherdata', auth, async (req, res) => {
           units: 'metric'
         }
       }),
-      // Air quality API call (New addition)
+      // Air quality API call
       axios.get('http://api.openweathermap.org/data/2.5/air_pollution', {
         params: {
           lat,
@@ -97,7 +107,6 @@ router.get('/weatherdata', auth, async (req, res) => {
         description: item.weather[0].description,
         icon: item.weather[0].icon
       })),
-      // Air quality data (New addition)
       airQuality: {
         aqi: airQualityResponse.data.list[0].main.aqi,
         components: airQualityResponse.data.list[0].components
@@ -110,6 +119,21 @@ router.get('/weatherdata', auth, async (req, res) => {
   } catch (error) {
     console.error('Error fetching weather data:', error.message);
     res.status(500).json({ message: 'Error fetching weather data' });
+  }
+});
+
+// New route to get search suggestions
+router.get('/suggestions', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ suggestions: user.recentSearches });
+  } catch (error) {
+    console.error('Error fetching suggestions:', error.message);
+    res.status(500).json({ message: 'Error fetching suggestions' });
   }
 });
 

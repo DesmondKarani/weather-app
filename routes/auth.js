@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
     });
 
     // Send success message along with the token in the response
-    res.status(201).json({ message: "Registration successful", token });
+    res.status(201).json({ message: "Registration successful", token, username: user.username });
 
   } catch (error) {
     // Handle potential errors
@@ -40,11 +40,17 @@ router.post('/login', async (req, res) => {
     // Extract login credentials from request body
     const { email, password } = req.body;
 
-    // Find the user by email
-    const user = await User.findOne({ email });
+    // Find the user by email and explicitly select the password
+    const user = await User.findOne({ email }).select('+password');
 
-    // Check if user exists and password is correct
-    if (!user || !(await user.correctPassword(password))) {
+    // Check if user exists
+    if (!user) {
+      return res.status(401).json({ message: 'Incorrect email or password' });
+    }
+
+    // Check if password is correct
+    const isPasswordCorrect = await user.correctPassword(password, user.password);
+    if (!isPasswordCorrect) {
       return res.status(401).json({ message: 'Incorrect email or password' });
     }
 
@@ -53,12 +59,13 @@ router.post('/login', async (req, res) => {
       expiresIn: '1d', // Token expires in 1 day
     });
 
-    // Send success message along with the token in the response
-    res.json({ message: "Login successful", token });
+    // Send success message along with the token and username in the response
+    res.json({ message: "Login successful", token, username: user.username });
 
   } catch (error) {
     // For any error, send the error message
     res.status(400).json({ message: error.message });
+    console.error('Login error:', error);
   }
 });
 

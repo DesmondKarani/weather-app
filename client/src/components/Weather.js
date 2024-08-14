@@ -3,15 +3,18 @@
  *
  * This component handles fetching and displaying detailed weather information.
  * It includes current weather with icons, "Real Feel", forecast information,
- * and air quality data (new addition).
+ * and air quality data.
  * It also includes a production mode check to warn users if the API is not available.
+ * Features: personalized welcome message, location suggestions with autocomplete,
+ * debounced weather data fetching, and improved search functionality.
+ * Latest updates: Refined search input and suggestions display.
  */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Weather.css';
+import { debounce } from 'lodash';
 
-// API URL from environment variables, with a fallback
 const API_URL = process.env.REACT_APP_API_URL || '';
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -22,13 +25,58 @@ function Weather() {
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [username, setUsername] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const navigate = useNavigate();
 
-  // Fetch weather data from the API
-  const fetchWeatherData = useCallback(async () => {
+  const fetchSuggestions = useCallback(async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Please log in to fetch suggestions');
+      }
+
+      const url = `${API_URL}/api/weather/suggestions`;
+      const response = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setSuggestions(response.data.suggestions);
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+    fetchSuggestions();
+
+    // Load dark mode preference from local storage
+    const storedDarkMode = localStorage.getItem('darkMode');
+    if (storedDarkMode !== null) {
+      setDarkMode(JSON.parse(storedDarkMode));
+    }
+  }, [fetchSuggestions]);
+
+  const getWelcomeMessage = () => {
+    const hour = new Date().getHours();
+    let greeting;
+    if (hour < 12) greeting = "Good morning";
+    else if (hour < 18) greeting = "Good afternoon";
+    else greeting = "Good evening";
+    return `${greeting}, ${username}`;
+  };
+
+  const fetchWeatherData = useCallback(async (searchLocation) => {
     setError('');
     setLoading(true);
+    setWeatherData(null); // Clear old data
+
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -37,81 +85,68 @@ function Weather() {
 
       const url = `${API_URL}/api/weather/weatherdata`;
       const response = await axios.get(url, {
-        params: { location },
+        params: { location: searchLocation },
         headers: { Authorization: `Bearer ${token}` }
       });
 
       setWeatherData(response.data);
       setLastUpdated(new Date());
+      await fetchSuggestions(); // Update suggestions after successful fetch
     } catch (error) {
       console.error('Error fetching weather data:', error);
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        if (error.response.status === 401) {
-          localStorage.removeItem('token');
-          setError('Your session has expired. Please log in again.');
-          setTimeout(() => navigate('/'), 3000);
-        } else if (error.response.status === 404) {
-          setError('Location not found. Please check the spelling and try again.');
-        } else {
-          setError(error.response.data.message || 'An error occurred while fetching weather data.');
-        }
-      } else if (error.request) {
-        // The request was made but no response was received
-        setError('Unable to reach the weather service. Please check your internet connection and try again.');
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        setError('An unexpected error occurred. Please try again later.');
-      }
-      setWeatherData(null);
+      setError(error.response?.data?.message || 'Error fetching weather data');
     } finally {
       setLoading(false);
     }
-  }, [location, navigate]);
+  }, [fetchSuggestions]);
 
-  // Check for token on component mount
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/');
-    }
-  }, [navigate]);
+  const debouncedFetchWeather = useMemo(
+    () => debounce((searchLocation) => fetchWeatherData(searchLocation), 300),
+    [fetchWeatherData]
+  );
 
-  // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!location.trim()) {
       setError('Please enter a location.');
       return;
     }
-    await fetchWeatherData();
+    await fetchWeatherData(location);
+    setShowSuggestions(false);
   };
 
-  // Refresh weather data
+  const handleInputChange = (e) => {
+    setLocation(e.target.value);
+    setShowSuggestions(true);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setLocation(suggestion);
+    setShowSuggestions(false);
+    debouncedFetchWeather(suggestion);
+  };
+
   const handleRefresh = async () => {
     if (location) {
-      await fetchWeatherData();
+      await fetchWeatherData(location);
     }
   };
 
-  // Logout handler
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/');
   };
 
-  // Toggle dark mode
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
   };
 
-  // Get weather icon URL
   const getWeatherIcon = (iconCode) => {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   };
 
-  // Format date and time
   const formatDateTime = (timestamp) => {
     const date = new Date(timestamp * 1000);
     return {
@@ -120,7 +155,6 @@ function Weather() {
     };
   };
 
-  // New function to get air quality description
   const getAirQualityDescription = (aqi) => {
     const descriptions = ['Good', 'Fair', 'Moderate', 'Poor', 'Very Poor'];
     return descriptions[aqi - 1] || 'Unknown';
@@ -137,25 +171,42 @@ function Weather() {
         </button>
       </div>
       <div className="content-container">
-        <h2>Search Location</h2>
+        {username && <h2 className="welcome-message">{getWelcomeMessage()}</h2>}
         {isProduction && !API_URL && (
           <p className="warning">
             Note: This is a production build. If you haven't hosted the API, weather data won't be available.
           </p>
         )}
         <form onSubmit={handleSubmit} className="weather-form">
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Enter location"
-            required
-          />
+          <div className="search-container">
+            <input
+              type="text"
+              value={location}
+              onChange={handleInputChange}
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+              placeholder="Search your Address, City, or Zip Code"
+              required
+            />
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="suggestions-wrapper">
+                <p className="suggestions-label">Recents</p>
+                <ul className="suggestions-list">
+                  {suggestions.map((suggestion, index) => (
+                    <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
           <button type="submit" disabled={loading || (isProduction && !API_URL)} className="fancy-button">
             {loading ? 'Loading...' : 'Get Weather'}
           </button>
         </form>
-        {error && <p className="error-message red-text">{error}</p>}
+        {loading && <p>Loading weather data...</p>}
+        {error && <p className="error-message">{error}</p>}
         {weatherData && (
           <div className="weather-info">
             <h2>Current Weather in {weatherData.location.name}, {weatherData.location.country}</h2>
@@ -193,7 +244,6 @@ function Weather() {
                 <span className="info-value">{weatherData.current.windSpeed} m/s</span>
               </div>
             </div>
-            {/* New section for air quality data */}
             {weatherData.airQuality && (
               <div className="air-quality-info">
                 <h3>Air Quality</h3>
