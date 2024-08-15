@@ -2,6 +2,8 @@
 
 This is a full-stack weather application built using the MERN stack (MongoDB, Express, React, Node.js). It allows users to register, login, and fetch current weather data, air quality information, and a 5-day forecast based on location.
 
+![Project Screenshot](./image.png)
+
 ## Table of Contents
 
 - [Features](#features)
