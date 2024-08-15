@@ -123,7 +123,7 @@ REACT_APP_OPENWEATHERMAP_API_KEY=your_openweathermap_api_key
 
 1. Start the backend server:
    ```
-   npm start
+   npm start (or node server)
    ```
 
 2. In a new terminal, start the frontend development server:
