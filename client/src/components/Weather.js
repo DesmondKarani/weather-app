@@ -164,7 +164,7 @@ function Weather() {
     <div className={`weather-page ${darkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="top-right-buttons">
         <button onClick={toggleDarkMode} className="mode-toggle fancy-button">
-          {darkMode ? '☀ Light' : '🌙 Dark'}
+          {darkMode ? '🔆 Light' : '🌙 Dark'}
         </button>
         <button onClick={handleLogout} className="logout-button fancy-button">
           Logout

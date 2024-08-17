@@ -69,7 +69,7 @@ function LandingPage() {
     >
       <div className="top-right-buttons">
         <button onClick={toggleDarkMode} className="mode-toggle fancy-button">
-          {darkMode ? '☀️ Light' : '🌙 Dark'}
+          {darkMode ? '🔆 Light' : '🌙 Dark'}
         </button>
       </div>
       <div className="content-container">

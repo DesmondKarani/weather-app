@@ -339,9 +339,9 @@ button:disabled {
 .mode-toggle {
   background-color: #2196F3;
 }
-
+/*toggle*/
 .dark-mode .mode-toggle {
-  background-color: #f1c40f;
+  background-color: #6C3483;
   color: #333;
 }
 
